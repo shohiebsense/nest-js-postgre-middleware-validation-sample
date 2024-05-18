@@ -7,7 +7,8 @@ import { UserController } from './user/user.controller';
 import { ConfigModule } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { HttpLoggerMiddleware } from './http-logger.middleware';
-
+import { MongooseModule } from '@nestjs/mongoose';
+import { MongodbUserModule } from './mongodbuser/mongodbuser.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -24,7 +25,11 @@ import { HttpLoggerMiddleware } from './http-logger.middleware';
         synchronize: false,
       }
     ),
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User]),
+    MongooseModule.forRoot(
+      'mongodb://127.0.0.1/nestjs_sample'
+    ),
+    MongodbUserModule
   ],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],
